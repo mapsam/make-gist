@@ -1,6 +1,6 @@
 # make-gist
 
-This is a small CLI tool that generates a Github gist by collecting files from a particular directory and making a request to the Github API.
+This is a small CLI tool that generates a Github gist by collecting files from a particular directory and making a request to the Github API. Only creates secret gists.
 
 **Which files are included?** This will include _any_ file present in the directory specificed. It _does not_ include any directories or subdirectories, and ignores specific files. Here is a list of ignored files:
 

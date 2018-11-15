@@ -64,13 +64,12 @@ test('[utils] makeGist - fails with no files', (assert) => {
 
   const input = [];
 
-  utils.makeGist(input, (err, body) => {
+  utils.makeGist(input, 'test-description', (err, body) => {
     assert.ok(err);
     assert.equal(err.message, 'No files provided.');
     assert.end();
   });
 });
-
 
 test('[utils] makeGist - fails with no MAKE_GIST_TOKEN present', (assert) => {
   const base = path.resolve(__dirname);
@@ -88,7 +87,7 @@ test('[utils] makeGist - fails with no MAKE_GIST_TOKEN present', (assert) => {
     }
   ];
 
-  utils.makeGist(input, (err, body) => {
+  utils.makeGist(input, 'test description', (err, body) => {
     assert.ok(err);
     assert.equal(err.message, 'Recevied a 401. {"message":"Bad credentials","documentation_url":"https://developer.github.com/v3"}');
     assert.end();
@@ -101,7 +100,7 @@ test('[utils] makeGist - success', (assert) => {
   nock('https://api.github.com')
     .post('/gists', function() {
       assert.equal(this.headers.authorization, 'token fake-token');
-      assert.equal(this.body, '{"description":"created with \\"make gist\\"","public":false,"files":{"something.txt":{"content":"This is something\\n"}}}');
+      assert.equal(this.body, '{"description":"test-description","public":false,"files":{"something.txt":{"content":"This is something\\n"}}}');
       return true;
     })
     .reply(201, { html_url: 'https://gist.github.com/1234' });
@@ -116,7 +115,7 @@ test('[utils] makeGist - success', (assert) => {
     }
   ];
 
-  utils.makeGist(input, (err, body) => {
+  utils.makeGist(input, 'test-description', (err, body) => {
     assert.ifError(err);
     assert.deepEqual(body, { html_url: 'https://gist.github.com/1234' });
     assert.end();
